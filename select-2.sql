@@ -41,12 +41,11 @@ JOIN artist_album a_a ON a_a.artist_id = a.artist_id
 JOIN track t ON t.album_id = a_a.album_id
 WHERE t.duration = (SELECT MIN(duration) FROM track);
 
-SELECT s.name from (SELECT a.name, COUNT(t.*) ct from album a
-JOIN track t ON t.album_id = a.album_id
-GROUP BY a.name) s
-WHERE s.ct = (SELECT MIN(s.ct) from (SELECT a.name, COUNT(t.*) ct from album a
-JOIN track t ON t.album_id = a.album_id
-GROUP BY a.name) s);
+SELECT s.name FROM (SELECT a.name, COUNT(t.*) ct FROM album a 
+JOIN track t ON t.album_id = a.album_id 
+GROUP BY a.name) s 
+WHERE s.ct = (SELECT MIN(s1.ct) FROM (SELECT COUNT(t1.*) ct FROM track t1 
+GROUP BY t1.album_id) s1);
 
 
 
